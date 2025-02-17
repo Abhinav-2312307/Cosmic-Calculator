@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Scientific Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="info-panel">
+        <p>Location: <span id="location">Fetching...</span></p>
+        <p>Temperature: <span id="temperature">Fetching...</span></p>
+    </div>
+
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="result" readonly>
+        </div>
+        <div class="mode-selector">
+            <button onclick="switchMode('basic')">Basic</button>
+            <button onclick="switchMode('scientific')">Scientific</button>
+            <button onclick="switchMode('stat')">Statistics</button>
+            <br>
+            <button onclick="switchMode('equation')">Equation</button>
+            <button onclick="switchMode('converter')">Converter</button>
+        </div>
+        <div class="buttons">
+            <!-- Basic Mode -->
+            <div class="mode-basic">
+                <!-- First Row: Top Functions -->
+                <button onclick="clearDisplay()">C</button>
+                <button onclick="appendToDisplay('(')">(</button>
+                <button onclick="appendToDisplay(')')">)</button>
+                <button onclick="backspace()">←</button>
+                <button onclick="appendToDisplay('%')">%</button>
+            
+                <!-- Second Row: Math Functions -->
+                <button onclick="appendToDisplay('Math.sqrt(')">√</button>
+                <button onclick="appendToDisplay('Math.log10(')">log</button>
+                <button onclick="appendToDisplay('**2')">x²</button>
+                <button onclick="appendToDisplay('**3')">x³</button>
+                <button onclick="appendToDisplay('Math.PI')">π</button>
+            
+                <!-- Third Row: Numbers and Operators -->
+                <button onclick="appendToDisplay('7')">7</button>
+                <button onclick="appendToDisplay('8')">8</button>
+                <button onclick="appendToDisplay('9')">9</button>
+                <button onclick="appendToDisplay('/')">/</button>
+                <button onclick="appendToDisplay('Math.E')">e</button>
+            
+                <!-- Fourth Row: Numbers and Operators -->
+                <button onclick="appendToDisplay('4')">4</button>
+                <button onclick="appendToDisplay('5')">5</button>
+                <button onclick="appendToDisplay('6')">6</button>
+                <button onclick="appendToDisplay('*')">×</button>
+                <button onclick="appendToDisplay('Math.log(')">ln</button>
+            
+                <!-- Fifth Row: Numbers and Operators -->
+                <button onclick="appendToDisplay('1')">1</button>
+                <button onclick="appendToDisplay('2')">2</button>
+                <button onclick="appendToDisplay('3')">3</button>
+                <button onclick="appendToDisplay('-')">-</button>
+                <button onclick="appendToDisplay('**')">^</button>
+            
+                <!-- Sixth Row: Bottom Functions -->
+                <button onclick="appendToDisplay('0')">0</button>
+                <button onclick="appendToDisplay('.')">.</button>
+                <button onclick="calculate()">=</button>
+                <button onclick="appendToDisplay('+')">+</button>
+            </div>
+    
+            <!-- Scientific Mode -->
+            <div class="mode-scientific hidden">
+                <button onclick="appendToDisplay('Math.sin(')">sin</button>
+                <button onclick="appendToDisplay('Math.cos(')">cos</button>
+                <button onclick="appendToDisplay('Math.tan(')">tan</button>
+                <button onclick="appendToDisplay('Math.asin(')">sin⁻¹</button>
+                <button onclick="appendToDisplay('Math.acos(')">cos⁻¹</button>
+                
+                <button onclick="appendToDisplay('Math.sinh(')">sinh</button>
+                <button onclick="appendToDisplay('Math.cosh(')">cosh</button>
+                <button onclick="appendToDisplay('Math.tanh(')">tanh</button>
+                <button onclick="appendToDisplay('Math.abs(')">abs</button>
+                <button onclick="appendToDisplay('factorial(')">n!</button>
+                
+                <button onclick="appendToDisplay('Math.exp(')">eˣ</button>
+                <button onclick="appendToDisplay('Math.cbrt(')">³√</button>
+                <button onclick="appendToDisplay('Math.pow(')">xʸ</button>
+                <button onclick="appendToDisplay('Math.atan(')">tan⁻¹</button>
+                <button onclick="appendToDisplay('Math.log2(')">log₂</button>
+                
+                <button onclick="appendToDisplay('Math.random()')">Rand</button>
+                <button onclick="appendToDisplay('Math.floor(')">floor</button>
+                <button onclick="appendToDisplay('Math.ceil(')">ceil</button>
+                <button onclick="appendToDisplay('Math.round(')">round</button>
+                <button onclick="appendToDisplay('Math.sign(')">sign</button>
+            </div>
+    
+            <!-- Statistics Mode -->
+            <div class="mode-stat hidden">
+                <button onclick="addDataPoint()">DATA+</button>
+                <button onclick="calculateMean()">Mean</button>
+                <button onclick="calculateStdDev()">σ</button>
+                <button onclick="clearData()">CD</button>
+                <button onclick="calculateMedian()">Median</button>
+                
+                <button onclick="calculateVariance()">Var</button>
+                <button onclick="calculateSum()">Σx</button>
+                <button onclick="calculateSumSquares()">Σx²</button>
+                <button onclick="calculateMin()">Min</button>
+                <button onclick="calculateMax()">Max</button>
+                
+                <input type="number" id="dataInput" class="stats-input" placeholder="Enter value">
+            </div>
+    
+            <!-- Equation Solver Mode -->
+            <div class="mode-equation hidden">
+                <select id="eqType">
+                    <option value="linear">Linear</option>
+                    <option value="quadratic">Quadratic</option>
+                    <option value="cubic">Cubic</option>
+                </select>
+                
+                <div id="linearEq">
+                    <input type="number" class="coeff" placeholder="a">
+                    <span>x + </span>
+                    <input type="number" class="coeff" placeholder="b">
+                    <span> = 0</span>
+                </div>
+                
+                <div id="quadraticEq" class="hidden">
+                    <input type="number" class="coeff" placeholder="a">
+                    <span>x² + </span>
+                    <input type="number" class="coeff" placeholder="b">
+                    <span>x + </span>
+                    <input type="number" class="coeff" placeholder="c">
+                    <span> = 0</span>
+                </div>
+                
+                <div id="cubicEq" class="hidden">
+                    <!-- Similar structure for cubic equation -->
+                </div>
+                
+                <button onclick="solveEquation()">Solve</button>
+                <button onclick="clearEquation()">Clear</button>
+            </div>
+    
+            <!-- Unit Converter Mode -->
+            <div class="mode-converter hidden">
+                <select id="conversionType">
+                    <option value="length">Length</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="weight">Weight</option>
+                    <option value="area">Area</option>
+                    <option value="volume">Volume</option>
+                </select>
+                
+                <input type="number" id="conversionInput" placeholder="Value">
+                <select id="fromUnit"></select>
+                <span>→</span>
+                <select id="toUnit"></select>
+                
+                <button onclick="convertUnits()">Convert</button>
+                <button onclick="swapUnits()">Swap</button>
+                <button onclick="clearConversion()">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
